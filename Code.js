@@ -32,12 +32,13 @@ function machineNameByCell(cellName) {
 function getData(helperName, cell, machine, batch, outOfResinTime) {
     var resinFormSubmitSheet = SpreadsheetApp.openById('1EmJMwV7AloL-Npb5Kz-d7WstEF0z-eqDzc5Bpk39x1o');
     var submitDataSheet = resinFormSubmitSheet.getSheetByName('resinReminderData');
-    var lastUpdatedRow = submitDataSheet.getRange('A1:A').getLastRow();
+    var lastUpdatedRow = submitDataSheet.getLastRow();
     console.log(helperName);
     console.log(cell);
     console.log(machine);
     console.log(batch);
     console.log(outOfResinTime);
+    console.log(lastUpdatedRow);
     submitDataSheet.getRange(lastUpdatedRow + 1, 1).setValue(helperName);
     submitDataSheet.getRange(lastUpdatedRow + 1, 2).setValue(cell);
     submitDataSheet.getRange(lastUpdatedRow + 1, 3).setValue(machine);

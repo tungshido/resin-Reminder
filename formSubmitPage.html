@@ -76,6 +76,12 @@
                             <i class="material-icons right ">send</i></button>
                     </div>
                 </div>
+                <!-- <div id="modal1" class="modal">
+                    <div class="modal-content">
+                        <h4>Modal Header</h4>
+                        <p>A bunch of text</p>
+                    </div>
+                </div>-->
             </form>
         </div>
         <script>
@@ -90,10 +96,10 @@
             function callEvent() {
                 var cellSelectedValue = $('#cellName').val();
                 google.script.run.withSuccessHandler(machineOption).machineNameByCell(cellSelectedValue);
-                var machineNameDropBoxhtml = '';
             }
 
             function machineOption(data) {
+                var machineNameDropBoxhtml = '';
                 try {
                     for (var i = 0; i < data.machineNameArray.length; i++) {
                         machineNameDropBoxhtml += '<option value=' + data.machineNameArray[i] + '>' + data.machineNameArray[i] + '</option>';
@@ -123,11 +129,13 @@
                 var resinBatch = $('#batch').val();
                 var outOfResinTime = $('#hora').val();
                 try {
-                    google.script.run.getData(helperName, cellSelectedValue, machineSelected, resinBatch, outOfResinTime);
+                    if (helperName != '' && cellSelectedValue != '' && machineSelected != '' && resinBatch != '' && outOfResinTime != '') {
+                        google.script.run.getData(helperName, cellSelectedValue, machineSelected, resinBatch, outOfResinTime);
+                    }
                 } catch (error) {
                     alert(error);
                 }
-
+                //$('.modal').modal();
                 $('#resinSubmit').each(function() {
                     this.reset();
                 });
