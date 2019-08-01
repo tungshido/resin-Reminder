@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        html {
+            touch-action: manipulation;
+        }
+    </style>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <title>Resin Reminder Form</title>
+    <meta name="viewport" content="width=device-width">
+
+    <body>
+        <div class="container">
+            <form id="resinSubmit">
+                <div class="row">
+                    <div class="input-field col s6 m6">
+                        <input placeholder="Nhập tên người cấp nhựa" id="first_name" type="text" required class="validate">
+                        <label for="first_name">Tên người cấp</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6 m6">
+                        <select id="cellName" required>
+                            <option value="" disabled selected>Chọn cell cần cấp nhựa</option>
+                            <option value="Cell 1">Cell 1</option>
+                            <option value="Cell 2">Cell 2</option>
+                            <option value="Cell 3">Cell 3</option>
+                            <option value="Cell 4">Cell 4</option>
+                            <option value="Cell 5">Cell 5</option>
+                            <option value="Cell 6">Cell 6</option>
+                            <option value="Cell 7">Cell 7</option>
+                            <option value="Cell 8">Cell 8</option>
+                            <option value="Cell 9">Cell 9</option>
+                            <option value="Cell 10">Cell 10</option>
+                            <option value="Cell 11">Cell 11</option>
+                            <option value="Cell 12">Cell 12</option>
+                            <option value="Cell 13">Cell 13</option>
+                            <option value="Cell 14">Cell 14</option>
+                            <option value="Cell 15">Cell 15</option>
+                            <option value="Cell 16">Cell 16</option>
+                            <option value="Cell 17">Cell 17</option>
+                            <option value="Cell 18">Cell 18</option>
+                            <option value="Cell 19">Cell 19</option>
+                            <option value="Cell 20">Cell 20</option>
+                        </select>
+                        <label>Chọn cell cấp nhựa</label>
+                    </div>
+                    <div class="input-field col s6 m6">
+                        <select placeholder="Chọn tên máy cần cấp nhựa" id="machineName" required></select>
+                        <label>Chọn máy cấp nhựa</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6 m6">
+                        <input placeholder="nhập batch nhựa ở đây" type="text" id="batch" required class="validate">
+                        <label for="batch">Nhập batch nhựa</label>
+                    </div>
+                    <div class="input-field col s4 m4">
+                        <input placeholder="nhấn vào đây để chọn" name="time" type="text" required class="timepicker" id="hora">
+                        <label for="timepicker">Chọn thời gian hết nhựa</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s4 m4">
+                        <button data-target="modal1" class="btn waves-effect waves-light modal-trigger" type="submit" name="action" id="btnSubmit">Xác nhận
+                            <i class="material-icons right ">send</i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $('#cellName').formSelect();
+                $('#hora').timepicker({
+                    defaultTime: 'now',
+                    twelveHour: false
+                });
+            });
+
+            function callEvent() {
+                var cellSelectedValue = $('#cellName').val();
+                google.script.run.withSuccessHandler(machineOption).machineNameByCell(cellSelectedValue);
+                var machineNameDropBoxhtml = '';
+            }
+
+            function machineOption(data) {
+                try {
+                    for (var i = 0; i < data.machineNameArray.length; i++) {
+                        machineNameDropBoxhtml += '<option value=' + data.machineNameArray[i] + '>' + data.machineNameArray[i] + '</option>';
+                    }
+                    $('#machineName').html(machineNameDropBoxhtml);
+                    $('#machineName').formSelect();
+                } catch (error) {
+                    alert(error);
+                }
+            }
+
+            $('#cellName').change(function(e) {
+                e.preventDefault();
+                callEvent();
+            });
+
+            $('#cellName').on('touchstart', function(e) {
+                e.preventDefault();
+                callEvent();
+            });
+
+            $('#resinSubmit').submit(function(e) {
+                e.preventDefault();
+                var helperName = $('#first_name').val();
+                var cellSelectedValue = $('#cellName').val();
+                var machineSelected = $('#machineName').val();
+                var resinBatch = $('#batch').val();
+                var outOfResinTime = $('#hora').val();
+                try {
+                    google.script.run.getData(helperName, cellSelectedValue, machineSelected, resinBatch, outOfResinTime);
+                } catch (error) {
+                    alert(error);
+                }
+
+                $('#resinSubmit').each(function() {
+                    this.reset();
+                });
+            });
+        </script>
+    </body>
+</head>
