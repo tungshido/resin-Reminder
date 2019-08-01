@@ -76,14 +76,14 @@
                             <i class="material-icons right ">send</i></button>
                     </div>
                 </div>
-                <!-- <div id="modal1" class="modal">
-                    <div class="modal-content">
-                        <h4>Modal Header</h4>
-                        <p>A bunch of text</p>
-                    </div>
-                </div>-->
             </form>
         </div>
+        <!--<div id="modal1" class="modal">
+            <div class="modal-content">
+                <h4>Modal Header</h4>
+                <p>A bunch of text</p>
+            </div>
+        </div>-->
         <script>
             $(document).ready(function() {
                 $('#cellName').formSelect();
@@ -91,6 +91,7 @@
                     defaultTime: 'now',
                     twelveHour: false
                 });
+
             });
 
             function callEvent() {
@@ -131,15 +132,21 @@
                 try {
                     if (helperName != '' && cellSelectedValue != '' && machineSelected != '' && resinBatch != '' && outOfResinTime != '') {
                         google.script.run.getData(helperName, cellSelectedValue, machineSelected, resinBatch, outOfResinTime);
+                        $('#resinSubmit').each(function() {
+                            this.reset();
+                        });
+                        //$('#modal1').modal('show');
+                    } else {
+                        //$('.modal-trigger').modal('close');
                     }
                 } catch (error) {
                     alert(error);
                 }
-                //$('.modal').modal();
-                $('#resinSubmit').each(function() {
-                    this.reset();
-                });
             });
+
+            /*$('#btnSubmit').click(function() {
+
+            });*/
         </script>
     </body>
 </head>
