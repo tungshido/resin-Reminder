@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <a id="styleFile">
+        <?!= include("styleSheet.html"); ?>
+    </a>
+    <a id="test">
+    </a>
+</head>
+
+<body>
+    <div id='resinAlert'><b class="alert-danger">SẮP HẾT NHỰA!!!</b>
+    </div>
+    <!--<div id="Tên máy" class="bg-primary">Show here
+    </div>-->
+    <nav class="row">
+        <div class="col s12" style="background-color: red;">
+            <img class="col s4" height=80 src="https://drive.google.com/a/colpal.com/uc?export=view&id=0BwP7ExB3lP43VTM2MVkzN3NJSUNqYzE5YjVJWjBpbXQyN2VV">
+
+        </div>
+    </nav>
+
+    <div id="notification">
+    </div>
+    <button id="submit-btn" class="btn btn-success wrapper" type="submit">Xác nhận
+        </button>
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tên máy</th>
+                    <th>Thời gian hết nhựa</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable">
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function onSuccess(data) {
+            var rowIndex = [];
+            var html = "";
+            var incompleteMachinehtml = '';
+            for (let i = 0; i < data.incompleteMachineName.length; i++) {
+                html += "<tr><td> " + data.incompleteMachineName[i] + "</td>" + "<td>" + data.outOfResinTimeArray[i] + "</td>" + "<td>" + "<input type='checkbox' class='checkbox' name='checkbox' id='" + data.blankRowIndex[i] + "'></td></tr>";
+            }
+            document.getElementById('dataTable').innerHTML = html;
+            document.getElementById("submit-btn").onclick = function() {
+                submitOnClick(rowIndex);
+            }
+            return incompleteMachinehtml;
+        }
+
+        function submitOnClick(rowIndex) {
+            var isCompletedArray = fillCompletedCell(rowIndex);
+            alert(isCompletedArray);
+            google.script.run.userSubmit(isCompletedArray);
+            document.getElementById('notification').innerHTML = 'dữ liệu đã được cập nhật';
+            google.script.run.withSuccessHandler(onSuccess).scanResinData();
+            setInterval(function() {
+                document.getElementById('notification').innerHTML = '';
+            }, 3000);
+        }
+
+        function fillCompletedCell(rowIndex) {
+            var values = [];
+            var checkboxes = document.querySelectorAll('input[name=checkbox]:checked');
+            Array.prototype.forEach.call(checkboxes, function(el) {
+                values.push(el.id);
+            });
+            return values;
+        }
+
+        setInterval(function() {
+            google.script.run.withSuccessHandler(onSuccess).scanResinData();
+        }, 5000);
+    </script>
+</body>
+
+</html>

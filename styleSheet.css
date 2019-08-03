@@ -1,0 +1,101 @@
+@-webkit-keyframes argh-my-eyes {
+    0% {
+        color: #d9534f;
+    }
+    49% {
+        color: #d9534f;
+    }
+    50% {
+        color: #5cb85c;
+    }
+    99% {
+        color: #5cb85c;
+    }
+    100% {
+        color: #d9534f;
+    }
+}
+
+@-moz-keyframes argh-my-eyes {
+    0% {
+        color: #d9534f;
+    }
+    49% {
+        color: #d9534f;
+    }
+    50% {
+        color: #5cb85c;
+    }
+    99% {
+        color: #5cb85c;
+    }
+    100% {
+        color: #d9534f;
+    }
+}
+
+@keyframes argh-my-eyes {
+    0% {
+        color: #d9534f;
+    }
+    49% {
+        color: #d9534f;
+    }
+    50% {
+        color: #5cb85c;
+    }
+    99% {
+        color: #5cb85c;
+    }
+    100% {
+        background: da;
+    }
+}
+
+.alert-danger {
+    -webkit-animation: argh-my-eyes 0.5s infinite;
+    -moz-animation: argh-my-eyes 0.5s infinite;
+    animation: argh-my-eyes 0.5s infinite;
+    font-size: 5em;
+}
+
+.wrapper {
+    text-align: center;
+}
+
+#resinAlert {
+    position: fixed;
+    top: 28%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
+.table {
+    position: fixed;
+    top: 45%;
+    left: 5%;
+    font-size: 17px;
+}
+
+.btn-success {
+    position: fixed;
+    top: 40%;
+    left: 65%;
+}
+
+input[name="checkbox"] {
+    position: fixed;
+    right: 45%;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 50%;
+}
+
+#notification {
+    position: fixed;
+    position: fixed;
+    top: 41%;
+    left: 52%;
+}
