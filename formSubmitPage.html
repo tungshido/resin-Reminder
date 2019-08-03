@@ -21,6 +21,11 @@
 
     <body>
         <div class="container">
+            <!--<div class="col s12" style="background: linear-gradient(to left, #ff0000 20%, #ff5050 80%);">-->
+            <div class="col s12" style="background: linear-gradient(to right, #ffffff 3%, #ff0000 80%);">
+                <img class="col s12 m4 l2" height=60 src="https://drive.google.com/a/colpal.com/uc?export=view&id=1XiCW5O89Ql1JMdy2osH8lNcPy4tFcsYq" style="position: relative; left: 30px; top: 3px;">
+                <img class="col s12 m4 l2" height=50 src="https://drive.google.com/a/colpal.com/uc?export=view&id=1Xvq_d4rrJvrdmVlpNTOs_ZLhzuaKcNxO" style="position: absolute; right: 220px; top: 8px;">
+            </div>
             <form id="resinSubmit">
                 <div class="row">
                     <div class="input-field col s6 m6">
@@ -30,8 +35,8 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s6 m6">
-                        <select id="cellName" required>
-                            <option value="" disabled selected>Chọn cell cần cấp nhựa</option>
+                        <select id="cellName">
+                            <option value="notselect" disabled selected>Chọn cell cần cấp nhựa</option>
                             <option value="Cell 1">Cell 1</option>
                             <option value="Cell 2">Cell 2</option>
                             <option value="Cell 3">Cell 3</option>
@@ -55,8 +60,8 @@
                         </select>
                         <label>Chọn cell cấp nhựa</label>
                     </div>
-                    <div class="input-field col s6 m6">
-                        <select placeholder="Chọn tên máy cần cấp nhựa" id="machineName" required></select>
+                    <div class="input-field col s4 m4">
+                        <select placeholder="Chọn tên máy cần cấp nhựa" id="machineName"></select>
                         <label>Chọn máy cấp nhựa</label>
                     </div>
                 </div>
@@ -72,26 +77,30 @@
                 </div>
                 <div class="row">
                     <div class="col s4 m4">
-                        <button data-target="modal1" class="btn waves-effect waves-light modal-trigger" type="submit" name="action" id="btnSubmit">Xác nhận
+                        <button class="btn waves-effect waves-light modal-trigger red" type="submit" name="action" id="btnSubmit">Xác
+                            nhận
                             <i class="material-icons right ">send</i></button>
                     </div>
                 </div>
             </form>
+            <text </div> <div id="successfulModal" class="modal">
+                <div class="modal-content">
+                    <p>Dữ liệu đã được cập nhật!!!</p>
+                </div>
         </div>
-        <!--<div id="modal1" class="modal">
+        <div id="isUncompletedModal" class="modal">
             <div class="modal-content">
-                <h4>Modal Header</h4>
-                <p>A bunch of text</p>
+                <p>Xin hãy điền đầy đủ thông tin!!!</p>
             </div>
-        </div>-->
+        </div>
         <script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 $('#cellName').formSelect();
+                $('.modal').modal();
                 $('#hora').timepicker({
                     defaultTime: 'now',
                     twelveHour: false
                 });
-
             });
 
             function callEvent() {
@@ -112,17 +121,17 @@
                 }
             }
 
-            $('#cellName').change(function(e) {
+            $('#cellName').change(function (e) {
                 e.preventDefault();
                 callEvent();
             });
 
-            $('#cellName').on('touchstart', function(e) {
+            $('#cellName').on('touchstart', function (e) {
                 e.preventDefault();
                 callEvent();
             });
 
-            $('#resinSubmit').submit(function(e) {
+            $('#resinSubmit').submit(function (e) {
                 e.preventDefault();
                 var helperName = $('#first_name').val();
                 var cellSelectedValue = $('#cellName').val();
@@ -130,23 +139,24 @@
                 var resinBatch = $('#batch').val();
                 var outOfResinTime = $('#hora').val();
                 try {
-                    if (helperName != '' && cellSelectedValue != '' && machineSelected != '' && resinBatch != '' && outOfResinTime != '') {
+                    if (helperName != '' && cellSelectedValue != null && machineSelected != null && resinBatch != '' && outOfResinTime != '') {
+                        alert(cellSelectedValue);
+                        alert(machineSelected);
                         google.script.run.getData(helperName, cellSelectedValue, machineSelected, resinBatch, outOfResinTime);
-                        $('#resinSubmit').each(function() {
+                        $('#successfulModal').modal('open');
+                        $('#resinSubmit').each(function () {
                             this.reset();
                         });
-                        //$('#modal1').modal('show');
-                    } else {
-                        //$('.modal-trigger').modal('close');
+                    } else if (cellSelectedValue == null) {
+                        $('#isUncompletedModal').modal('open');
                     }
                 } catch (error) {
                     alert(error);
                 }
             });
-
             /*$('#btnSubmit').click(function() {
 
             });*/
         </script>
     </body>
-</head>
+    </head>
